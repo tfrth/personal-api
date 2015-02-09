@@ -12,9 +12,21 @@ var me = {
 	occupations: ["hobo", "vagabond", "javascript poet"],
 	mentions: ["cabinporn.com"],
 	references: ["2 chainz", "dr. dre", "william wordsworth", "thomas jefferson"],
+	skills: [
+				{
+					id: 1,
+					name: 'Javascript',
+					experience: 'Intermediate'
+				},
+				{
+					id: 2,
+					name: 'CSS',
+					experience: 'Beginner'
+				}
+			]
 };
 
-var skills = {
+skills = {
   id: 1,
   name: 'Javascript',
   experience: 'Intermediate'
@@ -83,6 +95,44 @@ app.post('/mentions', function(req, res){
 	me.mentions.push(req.body);
 	res.json(me.mentions);
 })
+
+app.post('references', function(req, res){
+	me.references.push(req.body);
+	res.json(me.references);
+})
+
+app.get('skills', function(req, res){
+	var skillSet = [];
+	var skillSorter = function(level){
+		for (var i = 0; i < skills.length; i++) {
+			if (me.skills[i].experience === level) {
+				skillset.push(me.skills[i]);
+			}
+		}
+	return skillSet;
+
+	};
+
+	if (req.query.experience === 'Intermediate'){
+		var getSkills = skillSorter('Intermediate');
+		res.json(getSkills);
+	}
+
+	if (req.query.experience === 'Beginner'){
+		var getSkills = skillSorter('Beginner');
+		res.json(getSkills);
+	}
+	if(req.query.experience === 'Advanced'){
+		var getSills = skillSorter('Advanced');
+		res.json(getSkills);
+	}
+});
+
+app.post('skills', function(req, res){
+	me.push.skills(req.body);
+	res.json(me.skills);
+})
+
 
 
 
