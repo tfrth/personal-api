@@ -10,7 +10,7 @@ var me = {
 	location: "Portland, OR",
 	hobbies: ["hiking", "soccer", "surfing", "wood working", "cycling"],
 	occupations: ["hobo", "vagabond", "javascript poet"],
-	mentions: "cabinporn.com",
+	mentions: ["cabinporn.com"],
 	references: ["2 chainz", "dr. dre", "william wordsworth", "thomas jefferson"],
 };
 
@@ -41,22 +41,47 @@ app.get('/location', function(req, res){
 
 app.put('/location', function(req, res){
 	me.location = req.body.location;
-	res.json(me);
+	res.json(me.location);
 })
 
 app.get('/hobbies', function(req, res){
-	if(req.query.order === 'asc') {
+	if (req.query.order === 'asc') {
 		res.json(me.hobbies.sort());
+	}
+	else if(req.query.order === 'desc') {
+		res.json(me.hobbies.reverse());
+	} else {
+		res.json(me.hobbies);
 	}
 })
 
 app.get('/occupations', function(req, res){
-	res.json(me.occupations);
+	if (req.query.order === 'asc') {
+		res.json(me.occupations.sort());
+	}
+	else if (req.query.order === 'desc') {
+		res.json(me.occupations.reverse());
+	} else {
+		res.json(me.occupations);
+	}
 })
 
 app.get('/occupations/latest', function(req, res){
 	var last = me.occupations[me.occupations.length - 1];
 	res.json(last); 
+})
+
+app.get('/references', function(req, res){
+	res.json(me.references);
+})
+
+app.get('/mentions', function(req, res){
+	res.json(me.mentions);
+})
+
+app.post('/mentions', function(req, res){
+	me.mentions.push(req.body);
+	res.json(me.mentions);
 })
 
 
