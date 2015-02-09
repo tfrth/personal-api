@@ -23,6 +23,11 @@ var me = {
 					name: 'CSS',
 					experience: 'Beginner'
 				}
+				{
+					id: 3,
+					name: 'surfing',
+					experience: 'advanced'
+				}
 			]
 };
 
@@ -36,10 +41,11 @@ app.listen(port);
 
 app.use(bodyParser.json());
 
+
 app.use(function(req, res, next){
   res.setHeader('Access-Cnotrol-Allow-Origin','*');
-  res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, POST');
-  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, PUT, POST');
+  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');  //can install extra node module!
   next();
 })
 
