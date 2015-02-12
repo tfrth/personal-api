@@ -3,7 +3,28 @@ var bodyParser = require('body-parser');
 
 var app = express();
 
-var port = 8777;
+
+app.use(bodyParser.json());
+
+var port = 8777;r
+
+var allowCrossDomain = function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
+   if ('OPTIONS' == req.method) {
+      res.send(200);
+    }
+    else {
+      next();
+    }
+};
+app.use(allowCrossDomain);
+
+app.listen(port);
+console.log('listening on port: ' + port);
+
 
 var me = {
 	name: "Ty",
@@ -22,7 +43,7 @@ var me = {
 					id: 2,
 					name: 'CSS',
 					experience: 'Beginner'
-				}
+				},
 				{
 					id: 3,
 					name: 'surfing',
@@ -37,17 +58,14 @@ skills = {
   experience: 'Intermediate'
 };
 
-app.listen(port);
-
-app.use(bodyParser.json());
 
 
-app.use(function(req, res, next){
-  res.setHeader('Access-Cnotrol-Allow-Origin','*');
-  res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, PUT, POST');
-  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');  //can install extra node module!
-  next();
-})
+// app.use(function(req, res, next){
+//   res.setHeader('Access-Cnotrol-Allow-Origin','*');
+//   res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, PUT, POST');
+//   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');  //can install extra node module!
+//   next();
+// })
 
 app.get('/name', function(req, res){
 	res.json(me.name);
@@ -102,12 +120,12 @@ app.post('/mentions', function(req, res){
 	res.json(me.mentions);
 })
 
-app.post('references', function(req, res){
+app.post('/references', function(req, res){
 	me.references.push(req.body);
 	res.json(me.references);
 })
 
-app.get('skills', function(req, res){
+app.get('/skills', function(req, res){
 	var skillSet = [];
 	var skillSorter = function(level){
 		for (var i = 0; i < skills.length; i++) {
@@ -134,7 +152,7 @@ app.get('skills', function(req, res){
 	}
 });
 
-app.post('skills', function(req, res){
+app.post('/skills', function(req, res){
 	me.push.skills(req.body);
 	res.json(me.skills);
 })
